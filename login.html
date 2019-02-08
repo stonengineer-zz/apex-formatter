@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Anonymous Apex</title>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+        <script type="text/javascript">
+            const { ipcRenderer } = require('electron')
+            const jsforce = require('jsforce');
+            function login() {
+                const conn = new jsforce.Connection({
+                    loginURL: 'https://login.salesforce.com/services/Soap/u/45'
+                });
+                conn.login(
+                    document.getElementById("username").value,
+                    document.getElementById("password"), function(error, userInfo) {
+                    if(error) {
+                        alert(error);
+                        return null;
+                    }
+                    console.log('welcome, '+userInfo.id);
+                    ipcRenderer.send('login-successful');
+                });
+            }
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="main">
+                <h2>Please login to your Salesforce org.</h2>
+                <form id="form_id" method="post" name="myform">
+                    <label>Username:</label>
+                    <input type="text" name="username" id="username">
+                    <label>Password:</label>
+                    <input type="password" name="password" id="password">
+                    <input type="button" value="Login" id="submit" onclick="login()">
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

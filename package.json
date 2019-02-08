@@ -1,0 +1,12 @@
+{
+    "name": "apex-formatter",
+    "version": "0.1.0",
+    "main": "main.js",
+    "devDependencies": {
+        "electron": "^4.0.3",
+        "jsforce": "^1.9.1"
+    },
+    "scripts": {
+        "start": "electron ."
+    }
+}

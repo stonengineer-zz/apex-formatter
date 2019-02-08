@@ -3,8 +3,30 @@
     <head>
         <meta charset="UTF-8">
         <title>Anonymous Apex</title>
+        <script type="text/javascript">
+            const { ipcRenderer } = require('electron');
+            function sendCode() {
+                console.log('pressed submit button');
+                // execute anonymous Apex Code
+                var apexBody = "System.debug('Hello, World');";
+                ipcRenderer.send('run-apex', apexBody);
+            }
+            function logout() {
+                ipcRenderer.send('logout-pressed');
+            }
+        </script>
     </head>
     <body>
-        <h1>YAY</h1>
+        <div class="container">
+            <a href="javascript:void(0)" onclick="logout()">Logout</a>
+            <div class="title">
+                <h2>Enter your code below.</h2>
+            </div>
+            <div>
+                <textarea autofocus="true" style="width:100%;"></textarea>
+                <br/>
+                <input type="button" value="Submit" id="submit" onclick="sendCode()">
+            </div>
+        </div>
     </body>
 </html>

@@ -21,7 +21,8 @@ app.on('login', () => {
     currWindow = createWindowAt('main.html');
 })
 
-ipcMain.on('login-successful', () => {
+ipcMain.on('login-successful', (conn) => {
+    connection = conn;
     currWindow = createWindowAt('main.html');
 });
 

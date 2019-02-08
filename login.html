@@ -2,24 +2,31 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Anonymous Apex</title>
+        <title>Login to Salesforce</title>
         <link rel="stylesheet" type="text/css" href="styles.css">
         <script type="text/javascript">
+            const { clientId, clientSecret } = require('./secrets.js');
             const { ipcRenderer } = require('electron')
             const jsforce = require('jsforce');
             function login() {
                 const conn = new jsforce.Connection({
-                    loginURL: 'https://login.salesforce.com/services/Soap/u/45'
+                    oauth2: {
+                        loginURL: 'https://login.salesforce.com',
+                        clientId: clientId(),
+                        clientSecret: clientSecret(),
+                        redirectURI: 'https://login.salesforce.com/services/oauth2/callback'
+                    }
                 });
                 conn.login(
                     document.getElementById("username").value,
-                    document.getElementById("password"), function(error, userInfo) {
-                    if(error) {
-                        alert(error);
-                        return null;
-                    }
-                    console.log('welcome, '+userInfo.id);
-                    ipcRenderer.send('login-successful');
+                    document.getElementById("password").value, 
+                    function(error, userInfo) {
+                        if(error) {
+                            alert(error);
+                            return null;
+                        }
+                        console.log('welcome, '+userInfo.id);
+                        ipcRenderer.send('login-successful');
                 });
             }
         </script>
